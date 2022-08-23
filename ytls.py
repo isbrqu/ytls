@@ -1,9 +1,9 @@
 from youtube_dl import YoutubeDL
 import re
-import csv
+import clipboard
 
 options = {
-    'outtmpl': 'music/%(extractor)s-%(id)s-%(title)s.%(ext)s',
+    'outtmpl': 'music/%(title)s-%(id)s.%(ext)s',
     'simulate': True,
     'noplaylist': True,
     'quiet': True,
@@ -14,11 +14,17 @@ options = {
         'preferredquality': '192',
     }, {'key': 'EmbedThumbnail'},],
 }
-url = 'https://www.youtube.com/watch?v=fs2zUYQN9QA'
 pattern = re.compile(r'\d\d:\d\d:\d\d (.+)')
+url_base = 'youtube.com/watch?v='
+url = ''
+while url_base not in url:
+    url = clipboard.paste()
+    print(url)
+    msg = 'retry' if url_base not in url else 'continue'
+    input(f'Press enter to {msg}')
 
 with YoutubeDL(options) as ydl:
-    video = ydl.extract_info(url)
+    video = ydl.extract_info(clipboard.paste())
     value = video.get('description', None)
     names = pattern.findall(value)
     videos = []
@@ -31,12 +37,11 @@ with YoutubeDL(options) as ydl:
             'artist': video.get('artist'),
             'title': video.get('title')
         })
-        break
     print('download...')
     ydl.params['simulate'] = False
     ydl.params['quiet'] = False
     for video in videos:
         print(video.get('id'), video.get('artist'), video.get('title'))
-        url = f'https://youtube.com/watch?v={video.get("id")}'
+        url = f'{url_base}{video.get("id")}'
         ydl.download([url])
 
