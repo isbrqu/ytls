@@ -14,7 +14,7 @@ options = {
         'preferredquality': '192',
     }, {'key': 'EmbedThumbnail'},],
 }
-pattern = re.compile(r'\d\d:\d\d:\d\d (.+)')
+pattern = re.compile(r'(?:\d\d:)?\d\d:\d\d (.+)')
 url_base = 'youtube.com/watch?v='
 url = ''
 while url_base not in url:
