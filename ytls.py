@@ -25,7 +25,7 @@ while url_base not in url:
     input(f'Press enter to {msg}')
 
 with YoutubeDL(options) as ydl:
-    video = ydl.extract_info(clipboard.paste())
+    video = ydl.extract_info(url)
     value = video.get('description', None)
     names = pattern.findall(value)
     videos = []
