@@ -1,6 +1,7 @@
 from youtube_dl import YoutubeDL
 import re
 import clipboard
+import json
 
 options = {
     'outtmpl': 'music/%(title)s-%(id)s.%(ext)s',
@@ -37,6 +38,8 @@ with YoutubeDL(options) as ydl:
             'artist': video.get('artist'),
             'title': video.get('title')
         })
+    with open('videos.json', 'w') as file:
+        json.dump(videos, file, indent=2)
     print('download...')
     ydl.params['simulate'] = False
     ydl.params['quiet'] = False
