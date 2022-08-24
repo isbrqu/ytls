@@ -32,12 +32,9 @@ with YoutubeDL(options) as ydl:
     for name in names:
         search = f'ytsearch1:{name}'
         video = ydl.extract_info(search)['entries'][0]
-        print(video.get('id'), video.get('artist'), video.get('title'))
-        videos.append({
-            'id': video.get('id'),
-            'artist': video.get('artist'),
-            'title': video.get('title')
-        })
+        video = {key: video.get(key) for key in ['id', 'artist', 'title']}
+        print(video)
+        videos.append(video)
     with open('videos.json', 'w') as file:
         json.dump(videos, file, indent=2)
     print('download...')
