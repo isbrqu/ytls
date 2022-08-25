@@ -38,10 +38,12 @@ with YoutubeDL(options) as ydl:
     with open('videos.json', 'w') as file:
         json.dump(videos, file, indent=2)
     print('download...')
+    with open('videos.json', 'r') as file:
+        videos = json.load(file)
     ydl.params['simulate'] = False
     ydl.params['quiet'] = False
     for video in videos:
-        print(video.get('id'), video.get('artist'), video.get('title'))
+        print(video)
         url = f'{url_base}{video.get("id")}'
         ydl.download([url])
 
