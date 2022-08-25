@@ -42,8 +42,15 @@ with YoutubeDL(options) as ydl:
         videos = json.load(file)
     ydl.params['simulate'] = False
     ydl.params['quiet'] = False
-    for video in videos:
-        print(video)
-        url = f'{url_base}{video.get("id")}'
-        ydl.download([url])
+    try:
+        for video in videos:
+            print(video)
+            url = f'{url_base}{video.get("id")}'
+            ydl.download([url])
+            video['downloaded'] = True
+    except Exception as exception:
+        raise exception
+    finally:
+        with open('videos.json', 'w') as file:
+            json.dump(videos, file, indent=2)
 
